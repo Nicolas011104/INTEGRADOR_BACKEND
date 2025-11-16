@@ -12,6 +12,7 @@ export class ClienteController {
   getAll = async (req: Request, res: Response): Promise<void> => {
     try {
       const clientes = await this.clienteService.getAllClientes();
+      console.log('clientes', clientes);
       res.status(200).json({
         success: true,
         data: clientes,
