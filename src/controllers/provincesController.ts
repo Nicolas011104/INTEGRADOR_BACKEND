@@ -1,26 +1,25 @@
 import { Request, Response } from 'express';
-import { ClienteService } from '../services/clienteService';
 import { validationResult } from 'express-validator';
+import { ProvincesService } from '../services/provincesService';
 
-export class ClienteController {
-  private clienteService: ClienteService;
+export class ProvincesController {
+  private readonly provincesService: ProvincesService;
 
   constructor() {
-    this.clienteService = new ClienteService();
+    this.provincesService = new ProvincesService();
   }
 
-  getAll = async (req: Request, res: Response): Promise<void> => {
+  getAll = async (_req: Request, res: Response): Promise<void> => {
     try {
-      const clientes = await this.clienteService.getAllClientes();
-      console.log('clientes', clientes);
+      const provinces = await this.provincesService.getAllProvinces();
       res.status(200).json({
         success: true,
-        data: clientes,
+        data: provinces,
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: 'Error al obtener los clientes',
+        message: 'Error al obtener las provincias',
         error: error instanceof Error ? error.message : 'Error desconocido',
       });
     }
@@ -37,13 +36,13 @@ export class ClienteController {
         return;
       }
 
-      const cliente = await this.clienteService.getClienteById(id);
+      const province = await this.provincesService.getProvinceById(id);
       res.status(200).json({
         success: true,
-        data: cliente,
+        data: province,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Cliente no encontrado') {
+      if (error instanceof Error && error.message === 'Provincia no encontrada') {
         res.status(404).json({
           success: false,
           message: error.message,
@@ -51,7 +50,7 @@ export class ClienteController {
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al obtener el cliente',
+          message: 'Error al obtener la provincia',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }
@@ -70,14 +69,14 @@ export class ClienteController {
         return;
       }
 
-      const cliente = await this.clienteService.createCliente(req.body);
+      const province = await this.provincesService.createProvince(req.body);
       res.status(201).json({
         success: true,
-        message: 'Cliente creado exitosamente',
-        data: cliente,
+        message: 'Provincia creada exitosamente',
+        data: province,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'El email ya está registrado') {
+      if (error instanceof Error && error.message === 'El nombre de la provincia ya existe') {
         res.status(409).json({
           success: false,
           message: error.message,
@@ -85,7 +84,7 @@ export class ClienteController {
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al crear el cliente',
+          message: 'Error al crear la provincia',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }
@@ -113,27 +112,25 @@ export class ClienteController {
         return;
       }
 
-      const cliente = await this.clienteService.updateCliente(id, req.body);
+      const province = await this.provincesService.updateProvince(id, req.body);
       res.status(200).json({
         success: true,
-        message: 'Cliente actualizado exitosamente',
-        data: cliente,
+        message: 'Provincia actualizada exitosamente',
+        data: province,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Cliente no encontrado') {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else if (error instanceof Error && error.message === 'El email ya está registrado en otro cliente') {
-        res.status(409).json({
+      if (
+        error instanceof Error &&
+        (error.message === 'Provincia no encontrada' || error.message === 'El nombre de la provincia ya existe')
+      ) {
+        res.status(error.message === 'Provincia no encontrada' ? 404 : 409).json({
           success: false,
           message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al actualizar el cliente',
+          message: 'Error al actualizar la provincia',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }
@@ -151,13 +148,13 @@ export class ClienteController {
         return;
       }
 
-      await this.clienteService.deleteCliente(id);
+      await this.provincesService.deleteProvince(id);
       res.status(200).json({
         success: true,
-        message: 'Cliente eliminado exitosamente',
+        message: 'Provincia eliminada exitosamente',
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Cliente no encontrado') {
+      if (error instanceof Error && error.message === 'Provincia no encontrada') {
         res.status(404).json({
           success: false,
           message: error.message,
@@ -165,7 +162,7 @@ export class ClienteController {
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al eliminar el cliente',
+          message: 'Error al eliminar la provincia',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }

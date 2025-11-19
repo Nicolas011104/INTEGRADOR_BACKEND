@@ -1,69 +1,162 @@
 import { body } from 'express-validator';
 
-export const validateCliente = [
-  body('nombre')
+export const validateAppointmentStatus = [
+  body('name')
     .trim()
     .notEmpty()
-    .withMessage('El nombre es requerido')
+    .withMessage('El nombre del estado de la cita es requerido')
     .isLength({ min: 2, max: 100 })
-    .withMessage('El nombre debe tener entre 2 y 100 caracteres'),
+    .withMessage('El nombre del estado de la cita debe tener entre 2 y 100 caracteres'),
 
-  body('email')
-    .trim()
+  body('id_state')
     .notEmpty()
-    .withMessage('El email es requerido')
-    .isEmail()
-    .withMessage('El email debe ser válido')
-    .normalizeEmail(),
-
-  body('telefono')
-    .trim()
-    .notEmpty()
-    .withMessage('El teléfono es requerido')
-    .matches(/^[0-9+\-\s()]+$/)
-    .withMessage('El teléfono debe contener solo números y caracteres válidos')
-    .isLength({ min: 8, max: 20 })
-    .withMessage('El teléfono debe tener entre 8 y 20 caracteres'),
-
-  body('direccion')
-    .optional()
-    .trim()
-    .isLength({ max: 255 })
-    .withMessage('La dirección no puede exceder 255 caracteres'),
+    .withMessage('El ID del estado es requerido')
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
 ];
 
-export const validateClienteUpdate = [
-  body('nombre')
+export const validateAppointmentStatusUpdate = [
+  body('name')
     .optional()
     .trim()
     .notEmpty()
-    .withMessage('El nombre no puede estar vacío')
+    .withMessage('El nombre del estado de la cita no puede estar vacío')
     .isLength({ min: 2, max: 100 })
-    .withMessage('El nombre debe tener entre 2 y 100 caracteres'),
+    .withMessage('El nombre del estado de la cita debe tener entre 2 y 100 caracteres'),
 
-  body('email')
+  body('id_state')
     .optional()
-    .trim()
-    .notEmpty()
-    .withMessage('El email no puede estar vacío')
-    .isEmail()
-    .withMessage('El email debe ser válido')
-    .normalizeEmail(),
-
-  body('telefono')
-    .optional()
-    .trim()
-    .notEmpty()
-    .withMessage('El teléfono no puede estar vacío')
-    .matches(/^[0-9+\-\s()]+$/)
-    .withMessage('El teléfono debe contener solo números y caracteres válidos')
-    .isLength({ min: 8, max: 20 })
-    .withMessage('El teléfono debe tener entre 8 y 20 caracteres'),
-
-  body('direccion')
-    .optional()
-    .trim()
-    .isLength({ max: 255 })
-    .withMessage('La dirección no puede exceder 255 caracteres'),
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
 ];
 
+export const validatePaymentMethods = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre del método es requerido')
+    .isLength({ min: 2, max:100 })
+    .withMessage('El nombre del estado de la cita debe tener entre 2 y 100 caracteres'),
+
+  body('id_state')
+    .notEmpty()
+    .withMessage('El ID del estado es requerido')
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+]
+
+export const validatePaymentMethodsUpdate = [
+  body('name')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre del estado de la cita no puede estar vacío')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre del estado de la cita debe tener entre 2 y 100 caracteres'),
+
+  body('id_state')
+    .optional()
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
+
+export const validateRole = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre del rol es requerido')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre del rol debe tener entre 2 y 100 caracteres'),
+
+  body('id_state')
+    .notEmpty()
+    .withMessage('El ID del estado es requerido')
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
+
+export const validateRoleUpdate = [
+  body('name')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre del rol no puede estar vacío')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre del rol debe tener entre 2 y 100 caracteres'),
+
+  body('id_state')
+    .optional()
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
+
+export const validateProvince = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre de la provincia es requerido')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre de la provincia debe tener entre 2 y 100 caracteres'),
+
+  body('id_state')
+    .notEmpty()
+    .withMessage('El ID del estado es requerido')
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
+
+export const validateProvinceUpdate = [
+  body('name')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre de la provincia no puede estar vacío')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre de la provincia debe tener entre 2 y 100 caracteres'),
+
+  body('id_state')
+    .optional()
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
+
+export const validateCanton = [
+  body('name')
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre del cantón es requerido')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre del cantón debe tener entre 2 y 100 caracteres'),
+
+  body('id_province')
+    .notEmpty()
+    .withMessage('El ID de la provincia es requerido')
+    .isInt()
+    .withMessage('El ID de la provincia debe ser un número entero'),
+
+  body('id_state')
+    .notEmpty()
+    .withMessage('El ID del estado es requerido')
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
+
+export const validateCantonUpdate = [
+  body('name')
+    .optional()
+    .trim()
+    .notEmpty()
+    .withMessage('El nombre del cantón no puede estar vacío')
+    .isLength({ min: 2, max: 100 })
+    .withMessage('El nombre del cantón debe tener entre 2 y 100 caracteres'),
+
+  body('id_province')
+    .optional()
+    .isInt()
+    .withMessage('El ID de la provincia debe ser un número entero'),
+
+  body('id_state')
+    .optional()
+    .isInt()
+    .withMessage('El ID del estado debe ser un número entero'),
+];
