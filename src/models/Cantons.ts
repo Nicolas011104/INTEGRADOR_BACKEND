@@ -1,6 +1,7 @@
-export interface PaymentMethods {
+export interface Cantons {
     id?: number;
     name: string;
+    id_province: number;
     id_state: number;
     state_name?: string;
     created_at?: Date;
@@ -8,12 +9,14 @@ export interface PaymentMethods {
     deleted_at?: Date;
 }
 
-export interface PaymentMethodsCreate {
+export interface CantonsCreate {
     name: string;
+    id_province: number;
     id_state: number;
 }
 
-export interface PaymentMethodsUpdate {
+export interface CantonsUpdate {
     name?: string;
+    id_province?: number;
     id_state?: number;
 }

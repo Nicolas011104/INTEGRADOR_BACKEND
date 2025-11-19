@@ -7,7 +7,7 @@ export class AppointmentStatusRepository {
 
     async findAll(): Promise<AppointmentStatus[]> {
         const [rows] = await pool.execute<any[]>(
-            `SELECT ap.id, ap.name, ap.id_state
+            `SELECT ap.id, ap.name, ap.id_state, gs.name AS state_name
              FROM ${this.tableName} ap
              JOIN general_status gs ON ap.id_state = gs.id
              WHERE ap.deleted_at IS NULL`
@@ -17,7 +17,7 @@ export class AppointmentStatusRepository {
 
     async findById(id: number): Promise<AppointmentStatus | null> {
         const [rows] = await pool.execute<any[]>(
-            `SELECT ap.id, ap.name, ap.id_state
+            `SELECT ap.id, ap.name, ap.id_state, gs.name AS state_name
              FROM ${this.tableName} ap
              JOIN general_status gs ON ap.id_state = gs.id
              WHERE ap.id = ? AND ap.deleted_at IS NULL`,
