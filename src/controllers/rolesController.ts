@@ -1,26 +1,25 @@
 import { Request, Response } from 'express';
-import { ClienteService } from '../services/clienteService';
 import { validationResult } from 'express-validator';
+import { RolesService } from '../services/rolesService';
 
-export class ClienteController {
-  private clienteService: ClienteService;
+export class RolesController {
+  private readonly rolesService: RolesService;
 
   constructor() {
-    this.clienteService = new ClienteService();
+    this.rolesService = new RolesService();
   }
 
-  getAll = async (req: Request, res: Response): Promise<void> => {
+  getAll = async (_req: Request, res: Response): Promise<void> => {
     try {
-      const clientes = await this.clienteService.getAllClientes();
-      console.log('clientes', clientes);
+      const roles = await this.rolesService.getAllRoles();
       res.status(200).json({
         success: true,
-        data: clientes,
+        data: roles,
       });
     } catch (error) {
       res.status(500).json({
         success: false,
-        message: 'Error al obtener los clientes',
+        message: 'Error al obtener los roles',
         error: error instanceof Error ? error.message : 'Error desconocido',
       });
     }
@@ -37,13 +36,13 @@ export class ClienteController {
         return;
       }
 
-      const cliente = await this.clienteService.getClienteById(id);
+      const role = await this.rolesService.getRoleById(id);
       res.status(200).json({
         success: true,
-        data: cliente,
+        data: role,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Cliente no encontrado') {
+      if (error instanceof Error && error.message === 'Rol no encontrado') {
         res.status(404).json({
           success: false,
           message: error.message,
@@ -51,7 +50,7 @@ export class ClienteController {
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al obtener el cliente',
+          message: 'Error al obtener el rol',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }
@@ -70,14 +69,14 @@ export class ClienteController {
         return;
       }
 
-      const cliente = await this.clienteService.createCliente(req.body);
+      const role = await this.rolesService.createRole(req.body);
       res.status(201).json({
         success: true,
-        message: 'Cliente creado exitosamente',
-        data: cliente,
+        message: 'Rol creado exitosamente',
+        data: role,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'El email ya está registrado') {
+      if (error instanceof Error && error.message === 'El nombre del rol ya existe') {
         res.status(409).json({
           success: false,
           message: error.message,
@@ -85,7 +84,7 @@ export class ClienteController {
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al crear el cliente',
+          message: 'Error al crear el rol',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }
@@ -113,27 +112,25 @@ export class ClienteController {
         return;
       }
 
-      const cliente = await this.clienteService.updateCliente(id, req.body);
+      const role = await this.rolesService.updateRole(id, req.body);
       res.status(200).json({
         success: true,
-        message: 'Cliente actualizado exitosamente',
-        data: cliente,
+        message: 'Rol actualizado exitosamente',
+        data: role,
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Cliente no encontrado') {
-        res.status(404).json({
-          success: false,
-          message: error.message,
-        });
-      } else if (error instanceof Error && error.message === 'El email ya está registrado en otro cliente') {
-        res.status(409).json({
+      if (
+        error instanceof Error &&
+        (error.message === 'Rol no encontrado' || error.message === 'El nombre del rol ya existe')
+      ) {
+        res.status(error.message === 'Rol no encontrado' ? 404 : 409).json({
           success: false,
           message: error.message,
         });
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al actualizar el cliente',
+          message: 'Error al actualizar el rol',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }
@@ -151,13 +148,13 @@ export class ClienteController {
         return;
       }
 
-      await this.clienteService.deleteCliente(id);
+      await this.rolesService.deleteRole(id);
       res.status(200).json({
         success: true,
-        message: 'Cliente eliminado exitosamente',
+        message: 'Rol eliminado exitosamente',
       });
     } catch (error) {
-      if (error instanceof Error && error.message === 'Cliente no encontrado') {
+      if (error instanceof Error && error.message === 'Rol no encontrado') {
         res.status(404).json({
           success: false,
           message: error.message,
@@ -165,7 +162,7 @@ export class ClienteController {
       } else {
         res.status(500).json({
           success: false,
-          message: 'Error al eliminar el cliente',
+          message: 'Error al eliminar el rol',
           error: error instanceof Error ? error.message : 'Error desconocido',
         });
       }

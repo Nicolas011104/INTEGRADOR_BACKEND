@@ -2,10 +2,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
-import clienteRoutes from './routes/clienteRoutes';
+import appointmentStatusRoutes from './routes/appointmentStatusRoutes';
+import paymentMethodsRoutes from './routes/paymentMethodsRoutes';
+import rolesRoutes from './routes/rolesRoutes';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler';
 import pool from './config/database';
-
 dotenv.config();
 
 const app = express();
@@ -20,10 +21,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Rutas
-app.use('/api/clientes', clienteRoutes);
+app.use('/api/appointment-status', appointmentStatusRoutes);
+app.use('/api/payment-methods', paymentMethodsRoutes);
+app.use('/api/roles', rolesRoutes);
 
 // Ruta de salud
-app.get('/health', async (req, res) => {
+app.get('/health', async (_req, res) => {
   try {
     await pool.execute('SELECT 1');
     res.status(200).json({
