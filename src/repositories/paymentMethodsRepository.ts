@@ -7,7 +7,7 @@ export class PaymentMethodsRepository {
 
     async findAll(): Promise<PaymentMethods[]> {
         const [rows] = await pool.execute<any[]>(
-            `SELECT pm.id, pm.name, pm.id_state
+            `SELECT pm.id, pm.name, pm.id_state, gs.name AS state_name
              FROM ${this.tableName} pm
              JOIN general_status gs ON pm.id_state = gs.id
              WHERE pm.deleted_at IS NULL`
@@ -17,7 +17,7 @@ export class PaymentMethodsRepository {
     
     async findById(id: number): Promise<PaymentMethods | null> {
         const [rows] = await pool.execute<any[]>(
-            `SELECT pm.id, pm.name, pm.id_state
+            `SELECT pm.id, pm.name, pm.id_state, gs.name AS state_name
              FROM ${this.tableName} pm
              JOIN general_status gs ON pm.id_state = gs.id
              WHERE pm.id = ? AND pm.deleted_at IS NULL`,

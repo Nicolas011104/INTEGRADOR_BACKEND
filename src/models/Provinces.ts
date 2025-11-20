@@ -1,4 +1,4 @@
-export interface PaymentMethods {
+export interface Provinces {
     id?: number;
     name: string;
     id_state: number;
@@ -8,12 +8,13 @@ export interface PaymentMethods {
     deleted_at?: Date;
 }
 
-export interface PaymentMethodsCreate {
+export interface ProvincesCreate {
     name: string;
     id_state: number;
 }
 
-export interface PaymentMethodsUpdate {
+export interface ProvincesUpdate {
     name?: string;
     id_state?: number;
 }
+
